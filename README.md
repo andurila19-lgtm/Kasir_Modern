@@ -1,4 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KasirPro Modern
+
+A modern, high-performance Point of Sale (POS) system built with Next.js, Supabase, and Tailwind CSS.
+
+## 🔗 Live Demo
+**[kasir-modern.anduril.web.id](https://kasir-modern.anduril.web.id/)**
+
+## 📸 Project Preview
+![Dashboard Preview](/img/Screenshot%20(24).png)
+![POS Interface](/img/Screenshot%20(28).png)
 
 ## Demo Credentials
 

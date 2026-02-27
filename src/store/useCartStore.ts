@@ -7,6 +7,7 @@ interface CartState {
     addItem: (product: Product) => void;
     removeItem: (productId: string) => void;
     updateQuantity: (productId: string, quantity: number) => void;
+    setItemDiscount: (productId: string, discount: number) => void;
     clearCart: () => void;
     getTotal: () => number;
 }
@@ -45,10 +46,17 @@ export const useCartStore = create<CartState>()(
                     ),
                 });
             },
+            setItemDiscount: (productId, discount) => {
+                set({
+                    items: get().items.map((item) =>
+                        item.id === productId ? { ...item, discount: Math.max(0, discount) } : item
+                    ),
+                });
+            },
             clearCart: () => set({ items: [] }),
             getTotal: () => {
                 return get().items.reduce(
-                    (total, item) => total + item.price * item.quantity,
+                    (total, item) => total + (item.price * item.quantity) - (item.discount || 0),
                     0
                 );
             },

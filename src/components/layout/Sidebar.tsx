@@ -18,19 +18,22 @@ import { useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 
 const MENU_ITEMS = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
-    { icon: ShoppingCart, label: 'Kasir', href: '/pos' },
-    { icon: Package, label: 'Produk', href: '/products' },
-    { icon: History, label: 'Transaksi', href: '/transactions' },
-    { icon: TrendingUp, label: 'Laporan', href: '/reports' },
-    { icon: Settings, label: 'Pengaturan', href: '/settings' },
+    { icon: LayoutDashboard, label: 'Beranda', href: '/dashboard', adminOnly: true },
+    { icon: ShoppingCart, label: 'Point of Sale', href: '/pos', adminOnly: false },
+    { icon: Package, label: 'Stok Produk', href: '/products', adminOnly: true },
+    { icon: History, label: 'Riwayat Order', href: '/transactions', adminOnly: false },
+    { icon: TrendingUp, label: 'Laporan Laba', href: '/reports', adminOnly: true },
+    { icon: Settings, label: 'Konfigurasi', href: '/settings', adminOnly: false },
 ];
 
 export function Sidebar() {
     const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const logout = useAuthStore((state) => state.logout);
+    const isAdmin = useAuthStore((state) => state.isAdmin);
     const user = useAuthStore((state) => state.user);
+
+    const filteredItems = MENU_ITEMS.filter(item => !item.adminOnly || isAdmin());
 
     return (
         <aside
@@ -62,7 +65,7 @@ export function Sidebar() {
             </div>
 
             <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-                {MENU_ITEMS.map((item) => {
+                {filteredItems.map((item) => {
                     const isActive = pathname === item.href;
                     return (
                         <Link

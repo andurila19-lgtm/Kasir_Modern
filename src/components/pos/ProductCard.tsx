@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import { Product } from '@/types';
 import { formatCurrency } from '@/lib/utils';
 import { useCartStore } from '@/store/useCartStore';
+import { useAlertStore } from '@/store/useAlertStore';
 
 interface ProductCardProps {
     product: Product;
@@ -12,11 +13,16 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
     const addItem = useCartStore((state) => state.addItem);
+    const { showAlert } = useAlertStore();
 
     return (
         <div
             className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:shadow-md group cursor-pointer"
-            onClick={() => addItem(product)}
+            onClick={() => showAlert({
+                title: 'Tambah Menu?',
+                message: `Masukkan "${product.name}" ke dalam keranjang pesanan?`,
+                onConfirm: () => addItem(product)
+            })}
         >
             <div className="relative h-40 w-full overflow-hidden">
                 <img

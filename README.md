@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Demo Credentials
+
+Gunakan akun berikut untuk login ke aplikasi:
+- **Email**: `admin@kasirpro.id`
+- **Password**: `111111`
+
 ## Getting Started
 
 First, run the development server:
@@ -19,6 +25,19 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Admin & Demo Mode
+
+Untuk keamanan saat **Live Demo**, beberapa fitur seperti **Keamanan Akun**, **Reset Laporan**, dan **Database Management** disembunyikan secara default.
+
+Untuk menampilkannya kembali:
+1. Buka file `src/app/(dashboard)/settings/page.tsx`.
+2. Cari variabel `showAdminTools` (sekitar baris 44).
+3. Ubah nilainya menjadi `true`:
+   ```tsx
+   const showAdminTools = true;
+   ```
+4. Simpan file, dan bagian **Laporan & Data** akan muncul kembali di menu Pengaturan.
 
 ## Learn More
 

@@ -22,19 +22,22 @@ export interface Product {
     image: string;
     categoryId: string;
     categoryName?: string;
+    barcode?: string;
 }
 
 export interface CartItem extends Product {
     quantity: number;
+    discount?: number; // Discount amount in Rupiah
 }
 
-export type PaymentMethod = 'CASH' | 'QRIS' | 'TRANSFER';
+export type PaymentMethod = 'CASH' | 'QRIS' | 'TRANSFER' | 'DEBIT';
 
 export interface Transaction {
     id: string;
     items: CartItem[];
     subtotal: number;
     tax: number;
+    taxRate?: number;
     total: number;
     paymentMethod: PaymentMethod;
     amountPaid: number;

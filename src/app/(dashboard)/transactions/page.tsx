@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
     Search,
     Calendar,
@@ -8,12 +9,24 @@ import {
     ChevronRight,
     CreditCard,
     Banknote,
-    QrCode
+    QrCode,
+    Receipt
 } from 'lucide-react';
-import { TRANSACTIONS } from '@/lib/data';
+import { useTransactionStore } from '@/store/useTransactionStore';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 export default function TransactionsPage() {
+    const { transactions } = useTransactionStore();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterMethod, setFilterMethod] = useState('ALL');
+
+    const filteredTransactions = transactions.filter((trx) => {
+        const matchesSearch = trx.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            trx.cashierName.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesMethod = filterMethod === 'ALL' || trx.paymentMethod === filterMethod;
+        return matchesSearch && matchesMethod;
+    });
+
     return (
         <div className="p-4 md:p-8 space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -38,8 +51,10 @@ export default function TransactionsPage() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                     <input
                         type="text"
-                        placeholder="Cari ID Transaksi..."
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500"
+                        placeholder="Cari ID Transaksi atau Kasir..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                     />
                 </div>
                 <div className="relative">
@@ -47,14 +62,18 @@ export default function TransactionsPage() {
                     <input
                         type="text"
                         placeholder="Pilih Tanggal..."
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                     />
                 </div>
-                <select className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500 appearance-none">
-                    <option>Semua Metode Pembayaran</option>
-                    <option>Tunai</option>
-                    <option>QRIS</option>
-                    <option>Transfer Bank</option>
+                <select
+                    value={filterMethod}
+                    onChange={(e) => setFilterMethod(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500 appearance-none outline-none"
+                >
+                    <option value="ALL">Semua Metode Pembayaran</option>
+                    <option value="CASH">Tunai</option>
+                    <option value="QRIS">QRIS</option>
+                    <option value="TRANSFER">Transfer Bank</option>
                 </select>
             </div>
 
@@ -72,7 +91,7 @@ export default function TransactionsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y dark:divide-slate-800">
-                            {TRANSACTIONS.map((trx) => (
+                            {filteredTransactions.map((trx) => (
                                 <tr key={trx.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className="font-bold text-blue-600 dark:text-blue-400">{trx.id}</span>
@@ -109,6 +128,13 @@ export default function TransactionsPage() {
                             ))}
                         </tbody>
                     </table>
+                    {filteredTransactions.length === 0 && (
+                        <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+                            <Receipt size={48} className="mb-4 opacity-20" />
+                            <p className="font-medium text-lg">Transaksi tidak ditemukan</p>
+                            <p className="text-sm">Tidak ada riwayat transaksi yang sesuai dengan filter.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

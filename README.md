@@ -8,7 +8,7 @@
 Experience the system live in production:
 👉 **[Live Demo](https://kasir-modern.anduril.web.id/)**
 
-### � Demo Credentials
+### 🔑 Demo Credentials
 Access the full administrative suite using:
 *   **Email**: `admin@kasirpro.id`
 *   **Password**: `111111`

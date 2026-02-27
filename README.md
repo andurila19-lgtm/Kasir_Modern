@@ -6,8 +6,8 @@ A modern, high-performance Point of Sale (POS) system built with Next.js, Supaba
 **[kasir-modern.anduril.web.id](https://kasir-modern.anduril.web.id/)**
 
 ## 📸 Project Preview
-![Dashboard Preview](public/img/Screenshot%20(24).png)
-![POS Interface](public/img/Screenshot%20(28).png)
+![Dashboard Preview](public/img/dashboard.png)
+![POS Interface](public/img/pos.png)
 
 ## Demo Credentials
 

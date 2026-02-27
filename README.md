@@ -7,26 +7,23 @@ A modern, high-performance Point of Sale (POS) system built with Next.js, Supaba
 
 ## 📸 Project Preview
 
-### 🖥️ Dashboard & Analytics
+### 1. 🖥️ Beranda (Dashboard)
 ![Dashboard](public/img/dashboard.png)
 
-### 📊 Statistik Penjualan
-![Statistics](public/img/stats.png)
+### 2. 🛒 Point of Sale (POS)
+![POS](public/img/pos.png)
 
-### 🛒 Point of Sale (POS)
-![POS Interface](public/img/pos.png)
-
-### 📦 Manajemen Stok
+### 3. 📦 Stok Produk (Inventory)
 ![Inventory](public/img/inventory.png)
 
-### 📝 Riwayat Transaksi
-![History](public/img/history.png)
+### 4. 📝 Riwayat Order (Transactions)
+![Transactions](public/img/transactions.png)
 
-### ⚙️ Pengaturan Sistem
-![Settings](public/img/config.png)
+### 5. 📊 Laporan Laba (Reports)
+![Reports](public/img/reports.png)
 
-### 🖨️ Cetak Struk
-![Print](public/img/print.png)
+### 6. ⚙️ Pengaturan Sistem (Settings)
+![Settings](public/img/settings.png)
 
 ## Demo Credentials
 

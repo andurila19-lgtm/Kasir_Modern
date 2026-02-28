@@ -36,7 +36,8 @@ export const useProductStore = create<ProductState>()(
                             ...p,
                             id: String(p.id),
                             categoryId: String(p.category_id),
-                            categoryName: categories?.find(c => String(c.id) === String(p.category_id))?.name || 'Uncategorized'
+                            categoryName: categories?.find(c => String(c.id) === String(p.category_id))?.name || 'Uncategorized',
+                            barcode: p.barcode || undefined
                         }));
                         set({ products: mappedProducts, error: null });
                     }
@@ -58,7 +59,8 @@ export const useProductStore = create<ProductState>()(
                             price: productData.price,
                             stock: productData.stock,
                             image: productData.image,
-                            category_id: productData.categoryId
+                            category_id: productData.categoryId,
+                            barcode: productData.barcode || null
                         }])
                         .select();
 
@@ -86,7 +88,8 @@ export const useProductStore = create<ProductState>()(
                             price: updatedData.price,
                             stock: updatedData.stock,
                             image: updatedData.image,
-                            category_id: updatedData.categoryId
+                            category_id: updatedData.categoryId,
+                            barcode: updatedData.barcode || null
                         })
                         .eq('id', id);
 

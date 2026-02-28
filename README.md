@@ -76,6 +76,7 @@ CREATE TABLE products (
   price NUMERIC NOT NULL,
   stock INT DEFAULT 0,
   image TEXT,
+  barcode TEXT,
   category_id BIGINT REFERENCES categories(id),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

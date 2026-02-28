@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { X, Camera } from 'lucide-react';
 
 interface BarcodeScannerProps {
@@ -13,7 +13,18 @@ export function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps) {
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
-        const html5QrCode = new Html5Qrcode("reader");
+        const html5QrCode = new Html5Qrcode("reader", {
+            verbose: false,
+            formatsToSupport: [
+                Html5QrcodeSupportedFormats.EAN_13,
+                Html5QrcodeSupportedFormats.EAN_8,
+                Html5QrcodeSupportedFormats.UPC_A,
+                Html5QrcodeSupportedFormats.UPC_E,
+                Html5QrcodeSupportedFormats.CODE_128,
+                Html5QrcodeSupportedFormats.CODE_39,
+                Html5QrcodeSupportedFormats.QR_CODE,
+            ]
+        });
         let mounted = true;
 
         const startScanner = async () => {
@@ -23,7 +34,10 @@ export function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps) {
                 if (devices && devices.length > 0 && mounted) {
                     await html5QrCode.start(
                         { facingMode: "environment" },
-                        { fps: 10, qrbox: { width: 250, height: 250 } },
+                        {
+                            fps: 15,
+                            qrbox: { width: 250, height: 150 }, // Rectangular for 1D barcodes
+                        },
                         (decodedText) => {
                             if (html5QrCode.isScanning) {
                                 html5QrCode.stop().then(() => {

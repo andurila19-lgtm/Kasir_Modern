@@ -65,6 +65,7 @@ export const useProductStore = create<ProductState>()(
                     if (data) await get().fetchProducts();
                 } catch (err: any) {
                     console.error('Add product error:', err.message);
+                    alert(`Gagal menyimpan ke database:\n${err.message}\n\nProduk hanya disimpan sementara secara lokal dan akan hilang jika halaman dimuat ulang.`);
                     // Local fallback
                     const newProduct: Product = {
                         ...productData,

@@ -92,11 +92,7 @@ export default function POSPage() {
 
                     <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide pt-2">
                         <button
-                            onClick={() => showAlert({
-                                title: 'Ganti Kategori?',
-                                message: 'Tampilkan semua menu?',
-                                onConfirm: () => setActiveCategory('all')
-                            })}
+                            onClick={() => setActiveCategory('all')}
                             className={cn(
                                 "px-8 py-3 rounded-2xl text-sm font-bold whitespace-nowrap transition-all shadow-sm",
                                 activeCategory === 'all'
@@ -109,11 +105,7 @@ export default function POSPage() {
                         {CATEGORIES.map((cat) => (
                             <button
                                 key={cat.id}
-                                onClick={() => showAlert({
-                                    title: 'Buka Kategori?',
-                                    message: `Tampilkan menu untuk kategori ${cat.name}?`,
-                                    onConfirm: () => setActiveCategory(cat.id)
-                                })}
+                                onClick={() => setActiveCategory(cat.id)}
                                 className={cn(
                                     "px-8 py-3 rounded-2xl text-sm font-bold whitespace-nowrap transition-all shadow-sm",
                                     activeCategory === cat.id

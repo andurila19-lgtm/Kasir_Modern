@@ -47,7 +47,8 @@ export function ReceiptModal({ transaction, onClose }: ReceiptModalProps) {
                 cacheBust: true,
                 backgroundColor: '#ffffff',
                 style: {
-                    borderRadius: '0'
+                    borderRadius: '0',
+                    color: '#000000', // Ensure text is always dark when generated as an image
                 }
             });
 

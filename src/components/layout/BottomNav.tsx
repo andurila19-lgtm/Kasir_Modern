@@ -28,17 +28,11 @@ export function BottomNav() {
                         )}
                     >
                         <div className={cn(
-                            "p-1.5 rounded-xl transition-all",
-                            isActive ? "bg-blue-50 dark:bg-blue-900/20" : "bg-transparent"
+                            "p-2.5 rounded-xl transition-all",
+                            isActive ? "bg-blue-50 dark:bg-blue-900/20" : "bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800/50"
                         )}>
-                            <item.icon size={22} className={cn(isActive ? "text-blue-600 dark:text-blue-400 flex-shrink-0" : "flex-shrink-0")} />
+                            <item.icon size={26} className={cn(isActive ? "text-blue-600 dark:text-blue-400 flex-shrink-0" : "flex-shrink-0")} />
                         </div>
-                        <span className={cn(
-                            "text-[10px] truncate max-w-[64px] text-center",
-                            isActive ? "font-bold text-blue-600 dark:text-blue-400" : "font-medium text-slate-500"
-                        )}>
-                            {item.label}
-                        </span>
                     </Link>
                 );
             })}

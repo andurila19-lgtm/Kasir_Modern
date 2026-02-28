@@ -40,7 +40,8 @@ export default function ProductsPage() {
     const filteredProducts = products.filter((product) => {
         const matchesTab = activeTab === 'all' || (activeTab === 'out-of-stock' && product.stock === 0);
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            String(product.id).toLowerCase().includes(searchQuery.toLowerCase());
+            String(product.id).toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (product.barcode && product.barcode.toLowerCase().includes(searchQuery.toLowerCase()));
         return matchesTab && matchesSearch;
     });
 
@@ -74,7 +75,12 @@ export default function ProductsPage() {
 
     const handleScan = (code: string) => {
         setSearchQuery(code);
-        showAlert({ title: 'Barcode Dipindai', message: `Mencari produk dengan kode: ${code}`, variant: 'info' });
+        const found = products.find(p => p.barcode === code || String(p.id) === code);
+        if (found) {
+            showAlert({ title: 'Berhasil!', message: `Produk ditemukan: ${found.name}`, variant: 'info' });
+        } else {
+            showAlert({ title: 'Produk Tidak Ditemukan', message: `Barcode ${code} belum terdaftar di sistem.`, variant: 'warning' });
+        }
     };
 
     const handleImportCSV = (e: React.ChangeEvent<HTMLInputElement>) => {

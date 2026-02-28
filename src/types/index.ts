@@ -55,3 +55,17 @@ export interface DashboardStats {
     revenueByDay: { day: string; revenue: number }[];
     bestSellingProducts: { name: string; sales: number }[];
 }
+
+export type MutationType = 'IN' | 'OUT' | 'RETURN';
+
+export interface StockMutation {
+    id: string;
+    productId: string;
+    productName: string;
+    type: MutationType;
+    quantity: number;
+    note: string;
+    createdAt: string;
+    userId: string;
+    userName: string;
+}

@@ -11,7 +11,8 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
-    TrendingUp
+    TrendingUp,
+    ArrowLeftRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -21,6 +22,7 @@ const MENU_ITEMS = [
     { icon: LayoutDashboard, label: 'Beranda', href: '/dashboard', adminOnly: true },
     { icon: ShoppingCart, label: 'Point of Sale', href: '/pos', adminOnly: false },
     { icon: Package, label: 'Stok Produk', href: '/products', adminOnly: true },
+    { icon: ArrowLeftRight, label: 'Mutasi Stok', href: '/mutations', adminOnly: true },
     { icon: History, label: 'Riwayat Order', href: '/transactions', adminOnly: false },
     { icon: TrendingUp, label: 'Laporan Laba', href: '/reports', adminOnly: true },
     { icon: Settings, label: 'Konfigurasi', href: '/settings', adminOnly: false },

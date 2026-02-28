@@ -6,6 +6,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useProductStore } from '@/store/useProductStore';
 import { useTransactionStore } from '@/store/useTransactionStore';
+import { useStockMutationStore } from '@/store/useStockMutationStore';
 import { useThemeStore } from '@/store/useThemeStore';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -18,6 +19,7 @@ export default function DashboardLayout({
     const { isAuthenticated, isInitialized, initialize } = useAuthStore();
     const { fetchProducts } = useProductStore();
     const { fetchTransactions } = useTransactionStore();
+    const { fetchMutations } = useStockMutationStore();
     const { applyTheme } = useThemeStore();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
@@ -39,9 +41,10 @@ export default function DashboardLayout({
             } else {
                 fetchProducts();
                 fetchTransactions();
+                fetchMutations();
             }
         }
-    }, [isAuthenticated, isInitialized, mounted, router, fetchProducts, fetchTransactions]);
+    }, [isAuthenticated, isInitialized, mounted, router, fetchProducts, fetchTransactions, fetchMutations]);
 
     if (!mounted || !isInitialized) {
         return (

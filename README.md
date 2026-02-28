@@ -102,10 +102,21 @@ CREATE TABLE transaction_items (
   price NUMERIC NOT NULL,
   quantity INT NOT NULL
 );
+-- Core Table: Stock Mutations
+CREATE TABLE stock_mutations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  product_id BIGINT REFERENCES products(id) ON DELETE CASCADE,
+  product_name TEXT NOT NULL,
+  type TEXT NOT NULL, -- 'IN', 'OUT', or 'RETURN'
+  quantity INT NOT NULL,
+  note TEXT,
+  user_id UUID REFERENCES auth.users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 ```
 
 ### 2. Enable Real-time
-Enable **Realtime** for `products` and `transactions` tables in `Database -> Replication`.
+Enable **Realtime** for `products`, `transactions`, and `stock_mutations` tables in `Database -> Replication`.
 
 ---
 

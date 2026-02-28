@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 
-const MENU_ITEMS = [
+export const MENU_ITEMS = [
     { icon: LayoutDashboard, label: 'Beranda', href: '/dashboard', adminOnly: true },
     { icon: ShoppingCart, label: 'Point of Sale', href: '/pos', adminOnly: false },
     { icon: Package, label: 'Stok Produk', href: '/products', adminOnly: true },

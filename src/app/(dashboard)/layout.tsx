@@ -8,8 +8,9 @@ import { useProductStore } from '@/store/useProductStore';
 import { useTransactionStore } from '@/store/useTransactionStore';
 import { useStockMutationStore } from '@/store/useStockMutationStore';
 import { useThemeStore } from '@/store/useThemeStore';
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { BottomNav } from '@/components/layout/BottomNav';
 
 export default function DashboardLayout({
     children,
@@ -23,7 +24,6 @@ export default function DashboardLayout({
     const { applyTheme } = useThemeStore();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -65,43 +65,20 @@ export default function DashboardLayout({
 
     return (
         <div className="flex h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 overflow-hidden">
-            {/* Mobile Header / Burger */}
-            <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-900 border-b dark:border-slate-800 z-[60] flex items-center px-4 justify-between">
-                <div className="flex items-center gap-2 font-bold text-blue-600">
-                    <span className="bg-blue-600 text-white p-1 rounded-lg">PRO</span>
-                    <span>KasirPro</span>
-                </div>
-                <button
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-400"
-                >
-                    {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
-            </div>
-
-            {/* Sidebar Overlay for Mobile */}
-            <div
-                className={cn(
-                    "fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] transition-opacity duration-300 lg:hidden",
-                    isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                )}
-                onClick={() => setIsSidebarOpen(false)}
-            />
-
-            {/* Sidebar */}
-            <div className={cn(
-                "fixed inset-y-0 left-0 z-[80] transition-transform duration-300 transform lg:relative lg:translate-x-0 lg:z-auto",
-                isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            )}>
-                <Sidebar onCloseMobile={() => setIsSidebarOpen(false)} />
+            {/* Sidebar (Desktop) */}
+            <div className="hidden lg:block fixed inset-y-0 left-0 z-[80] lg:relative">
+                <Sidebar />
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 min-w-0 flex flex-col h-full bg-slate-50 dark:bg-slate-950 pt-16 lg:pt-0">
+            <div className="flex-1 min-w-0 flex flex-col h-full bg-slate-50 dark:bg-slate-950 pb-[72px] lg:pb-0">
                 <main className="flex-1 overflow-auto">
                     {children}
                 </main>
             </div>
+
+            {/* Mobile Bottom Navigation */}
+            <BottomNav />
         </div>
     );
 }

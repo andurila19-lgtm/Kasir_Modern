@@ -29,6 +29,7 @@ In today's fast-paced digital economy, business owners struggle with fragmented 
 ## ✨ Key Features
 
 *   ✅ **Ultra-Fast POS Interface**: Designed for high-cadence retail environments.
+*   ✅ **Barcode Scanner Integration**: Fast and reliable product scanning using device cameras for rapid checkout.
 *   ✅ **Real-Time Inventory System**: Automated stock adjustments and low-stock alerts.
 *   ✅ **Insightful Analytics**: Dynamic dashboards visualizing revenue trends and top performers.
 *   ✅ **Comprehensive Reporting**: Detailed profit/loss analysis and transaction history.

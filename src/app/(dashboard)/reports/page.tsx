@@ -56,6 +56,7 @@ export default function ReportsPage() {
     const filteredTransactions = useMemo(() => {
         const now = new Date();
         return transactions.filter(trx => {
+            if (!trx.createdAt) return false;
             const trxDate = new Date(trx.createdAt);
             if (filter === 'Hari') return isAfter(trxDate, startOfDay(now));
             if (filter === 'Minggu') return isAfter(trxDate, startOfWeek(now));
@@ -121,7 +122,7 @@ export default function ReportsPage() {
         const tableColumn = ['ID Transaksi', 'Waktu', 'Kasir', 'Total', 'Pajak', 'Metode'];
         const tableRows = filteredTransactions.map(trx => [
             trx.id,
-            format(new Date(trx.createdAt), 'dd/MM/yy HH:mm'),
+            trx.createdAt ? format(new Date(trx.createdAt), 'dd/MM/yy HH:mm') : '-',
             trx.cashierName,
             formatCurrency(trx.total),
             formatCurrency(trx.tax),
@@ -147,7 +148,7 @@ export default function ReportsPage() {
         const headers = ['ID Transaksi', 'Waktu', 'Kasir', 'Total', 'Pajak', 'Metode Pembayaran'];
         const rows = filteredTransactions.map(trx => [
             trx.id,
-            format(new Date(trx.createdAt), 'yyyy-MM-dd HH:mm:ss'),
+            trx.createdAt ? format(new Date(trx.createdAt), 'yyyy-MM-dd HH:mm:ss') : '-',
             trx.cashierName,
             trx.total,
             trx.tax,

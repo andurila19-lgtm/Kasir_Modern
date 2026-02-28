@@ -29,7 +29,31 @@ export const useTransactionStore = create<TransactionState>()(
                         .order('created_at', { ascending: false });
 
                     if (error) throw error;
-                    if (data) set({ transactions: data as any });
+                    if (data) {
+                        const formattedData = data.map((trx: any) => ({
+                            id: trx.id,
+                            subtotal: trx.subtotal,
+                            tax: trx.tax,
+                            total: trx.total,
+                            paymentMethod: trx.payment_method,
+                            amountPaid: trx.amount_paid,
+                            change: trx.change,
+                            createdAt: trx.created_at,
+                            cashierId: trx.cashier_id || 'unknown',
+                            cashierName: trx.cashier_id ? 'Kasir' : 'Guest',
+                            items: trx.items ? trx.items.map((item: any) => ({
+                                id: item.product_id,
+                                name: item.name,
+                                price: item.price,
+                                quantity: item.quantity,
+                                description: '',
+                                stock: 0,
+                                image: '',
+                                categoryId: ''
+                            })) : []
+                        }));
+                        set({ transactions: formattedData });
+                    }
                 } catch (err: any) {
                     console.error('Fetch transactions error:', err.message);
                 } finally {
@@ -42,21 +66,25 @@ export const useTransactionStore = create<TransactionState>()(
                     const { data: trxData, error: trxError } = await supabase
                         .from('transactions')
                         .insert([{
-                            id: transaction.id,
                             subtotal: transaction.subtotal,
                             tax: transaction.tax,
                             total: transaction.total,
                             payment_method: transaction.paymentMethod,
                             amount_paid: transaction.amountPaid,
                             change: transaction.change,
-                            cashier_id: null // Assuming auth is handled elsewhere or null for now
+                            cashier_id: transaction.cashierId !== 'guest' ? transaction.cashierId : null
                         }])
-                        .select();
+                        .select()
+                        .single();
 
                     if (trxError) throw trxError;
 
+                    if (!trxData || !trxData.id) {
+                        throw new Error("Failed to capture generated transaction ID");
+                    }
+
                     const itemsToInsert = transaction.items.map(item => ({
-                        transaction_id: transaction.id,
+                        transaction_id: trxData.id,
                         product_id: item.id,
                         name: item.name,
                         price: item.price,

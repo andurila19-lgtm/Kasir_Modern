@@ -31,7 +31,7 @@ export default function DashboardPage() {
 
     // Stats calculations
     const today = new Date();
-    const todayTransactions = transactions.filter(trx => isSameDay(new Date(trx.createdAt), today));
+    const todayTransactions = transactions.filter(trx => trx.createdAt && isSameDay(new Date(trx.createdAt), today));
     const todayRevenue = todayTransactions.reduce((acc, trx) => acc + trx.total, 0);
     const lowStockProducts = products.filter(p => p.stock <= 5);
 
@@ -39,7 +39,7 @@ export default function DashboardPage() {
     const revenueByDay = Array.from({ length: 7 }, (_, i) => {
         const d = subDays(today, 6 - i);
         const dayRevenue = transactions
-            .filter(trx => isSameDay(new Date(trx.createdAt), d))
+            .filter(trx => trx.createdAt && isSameDay(new Date(trx.createdAt), d))
             .reduce((acc, trx) => acc + trx.total, 0);
 
         return {

@@ -24,7 +24,7 @@ export const ReceiptPrint = forwardRef<HTMLDivElement, { transaction: Transactio
                     </div>
                     <div className="flex justify-between">
                         <span>Tanggal:</span>
-                        <span>{formatDate(transaction.createdAt)}</span>
+                        <span>{transaction.createdAt ? formatDate(transaction.createdAt) : '-'}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Kasir:</span>

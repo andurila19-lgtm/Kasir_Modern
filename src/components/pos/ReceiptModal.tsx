@@ -92,7 +92,7 @@ export function ReceiptModal({ transaction, onClose }: ReceiptModalProps) {
                         </div>
                         <div className="flex justify-between">
                             <span>Waktu</span>
-                            <span>{formatDate(transaction.createdAt)}</span>
+                            <span>{transaction.createdAt ? formatDate(transaction.createdAt) : '-'}</span>
                         </div>
                         <div className="flex justify-between">
                             <span>Kasir</span>

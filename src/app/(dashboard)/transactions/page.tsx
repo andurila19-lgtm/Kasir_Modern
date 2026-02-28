@@ -97,7 +97,7 @@ export default function TransactionsPage() {
                                         <span className="font-bold text-blue-600 dark:text-blue-400">{trx.id}</span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        {formatDate(trx.createdAt)}
+                                        {trx.createdAt ? formatDate(trx.createdAt) : '-'}
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-2">

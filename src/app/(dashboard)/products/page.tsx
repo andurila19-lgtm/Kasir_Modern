@@ -37,7 +37,7 @@ export default function ProductsPage() {
     const filteredProducts = products.filter((product) => {
         const matchesTab = activeTab === 'all' || (activeTab === 'out-of-stock' && product.stock === 0);
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.id.toLowerCase().includes(searchQuery.toLowerCase());
+            String(product.id).toLowerCase().includes(searchQuery.toLowerCase());
         return matchesTab && matchesSearch;
     });
 
@@ -229,7 +229,7 @@ export default function ProductsPage() {
                                             </div>
                                             <div>
                                                 <p className="font-bold text-sm">{product.name}</p>
-                                                <p className="text-xs text-slate-500">ID: PRD-{product.id.substring(0, 6)}</p>
+                                                <p className="text-xs text-slate-500">ID: PRD-{String(product.id).substring(0, 6)}</p>
                                             </div>
                                         </div>
                                     </td>

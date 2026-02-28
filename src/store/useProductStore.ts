@@ -34,8 +34,9 @@ export const useProductStore = create<ProductState>()(
                     if (data) {
                         const mappedProducts = data.map((p: any) => ({
                             ...p,
-                            categoryId: p.category_id,
-                            categoryName: categories?.find(c => c.id === p.category_id)?.name || 'Uncategorized'
+                            id: String(p.id),
+                            categoryId: String(p.category_id),
+                            categoryName: categories?.find(c => String(c.id) === String(p.category_id))?.name || 'Uncategorized'
                         }));
                         set({ products: mappedProducts, error: null });
                     }

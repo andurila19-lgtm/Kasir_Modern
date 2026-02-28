@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
-import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Html5Qrcode } from 'html5-qrcode';
+import { X, Camera } from 'lucide-react';
 
 interface BarcodeScannerProps {
     onScan: (decodedText: string) => void;
@@ -10,31 +10,53 @@ interface BarcodeScannerProps {
 }
 
 export function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps) {
-    const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
-        scannerRef.current = new Html5QrcodeScanner(
-            "reader",
-            { fps: 10, qrbox: { width: 250, height: 250 } },
-            /* verbose= */ false
-        );
+        const html5QrCode = new Html5Qrcode("reader");
+        let mounted = true;
 
-        scannerRef.current.render(
-            (decodedText) => {
-                onScan(decodedText);
-                if (scannerRef.current) {
-                    scannerRef.current.clear();
+        const startScanner = async () => {
+            try {
+                // This will ask for camera permission
+                const devices = await Html5Qrcode.getCameras();
+                if (devices && devices.length > 0 && mounted) {
+                    await html5QrCode.start(
+                        { facingMode: "environment" },
+                        { fps: 10, qrbox: { width: 250, height: 250 } },
+                        (decodedText) => {
+                            if (html5QrCode.isScanning) {
+                                html5QrCode.stop().then(() => {
+                                    onScan(decodedText);
+                                    onClose();
+                                }).catch(console.error);
+                            }
+                        },
+                        () => {
+                            // ignore frame parse errors
+                        }
+                    );
+                } else {
+                    if (mounted) setErrorMsg("Kamera tidak ditemukan di perangkat ini.");
                 }
-                onClose();
-            },
-            (error) => {
-                // Ignore errors
+            } catch (err: any) {
+                console.error("Error starting camera", err);
+                if (mounted) {
+                    setErrorMsg(`Izin kamera ditolak atau error: ${err?.message || err}`);
+                }
             }
-        );
+        };
+
+        // Give UI a tiny bit of time to render the #reader div before starting
+        const timerId = setTimeout(() => {
+            startScanner();
+        }, 300);
 
         return () => {
-            if (scannerRef.current) {
-                scannerRef.current.clear().catch(err => console.error("Failed to clear scanner", err));
+            mounted = false;
+            clearTimeout(timerId);
+            if (html5QrCode.isScanning) {
+                html5QrCode.stop().catch(() => { });
             }
         };
     }, [onScan, onClose]);
@@ -48,9 +70,19 @@ export function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps) {
                         <X size={20} />
                     </button>
                 </div>
+
                 <div className="p-8">
-                    <div id="reader" className="w-full rounded-2xl overflow-hidden border-4 border-blue-600/20"></div>
+                    {errorMsg ? (
+                        <div className="text-center p-6 border-2 border-red-200 bg-red-50 text-red-600 rounded-2xl flex flex-col items-center gap-3">
+                            <Camera size={32} />
+                            <p className="font-bold text-sm">{errorMsg}</p>
+                            <p className="text-xs text-red-400">Pastikan Anda telah mengizinkan akses kamera di pengaturan browser.</p>
+                        </div>
+                    ) : (
+                        <div id="reader" className="w-full rounded-2xl overflow-hidden border-4 border-blue-600/20 bg-black min-h-[300px]"></div>
+                    )}
                 </div>
+
                 <div className="p-6 bg-slate-50 dark:bg-slate-800/50 text-center">
                     <p className="text-xs text-slate-500 font-medium">Arahkan barcode produk ke kamera Anda</p>
                 </div>

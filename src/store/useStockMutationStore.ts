@@ -24,7 +24,7 @@ export const useStockMutationStore = create<StockMutationState>()(
                 try {
                     const { data, error } = await supabase
                         .from('stock_mutations')
-                        .select('*, profiles:user_id(name)')
+                        .select('*')
                         .order('created_at', { ascending: false });
 
                     if (error) throw error;
@@ -38,7 +38,7 @@ export const useStockMutationStore = create<StockMutationState>()(
                             note: mut.note,
                             createdAt: mut.created_at,
                             userId: mut.user_id,
-                            userName: mut.profiles?.name || 'Kasir',
+                            userName: mut.user_id ? 'Kasir' : 'Guest',
                         }));
                         set({ mutations: formatted, error: null });
                     }

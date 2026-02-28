@@ -93,7 +93,7 @@ export default function DashboardLayout({
                 "fixed inset-y-0 left-0 z-[80] transition-transform duration-300 transform lg:relative lg:translate-x-0 lg:z-auto",
                 isSidebarOpen ? "translate-x-0" : "-translate-x-full"
             )}>
-                <Sidebar />
+                <Sidebar onCloseMobile={() => setIsSidebarOpen(false)} />
             </div>
 
             {/* Main Content */}

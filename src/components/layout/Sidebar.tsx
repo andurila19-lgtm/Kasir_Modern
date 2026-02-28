@@ -28,7 +28,11 @@ const MENU_ITEMS = [
     { icon: Settings, label: 'Konfigurasi', href: '/settings', adminOnly: false },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+    onCloseMobile?: () => void;
+}
+
+export function Sidebar({ onCloseMobile }: SidebarProps) {
     const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const logout = useAuthStore((state) => state.logout);
@@ -40,7 +44,7 @@ export function Sidebar() {
     return (
         <aside
             className={cn(
-                "bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 flex flex-col h-screen sticky top-0",
+                "bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 flex flex-col h-full",
                 isCollapsed ? "w-20" : "w-64"
             )}
         >
@@ -79,6 +83,7 @@ export function Sidebar() {
                                     ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-medium"
                                     : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"
                             )}
+                            onClick={onCloseMobile}
                         >
                             <item.icon size={22} className={cn(isActive ? "text-blue-600" : "group-hover:text-slate-700 dark:group-hover:text-slate-300")} />
                             {!isCollapsed && <span>{item.label}</span>}

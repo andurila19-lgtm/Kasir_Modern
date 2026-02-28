@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Search, Package, ShoppingCart, Barcode } from 'lucide-react';
 import { ProductCard } from '@/components/pos/ProductCard';
 import { Cart } from '@/components/pos/Cart';
-import { BarcodeScanner } from '@/components/pos/BarcodeScanner';
 import { CATEGORIES } from '@/lib/data';
 import { useProductStore } from '@/store/useProductStore';
 import { useCartStore } from '@/store/useCartStore';
@@ -18,7 +17,6 @@ export default function POSPage() {
     const [activeCategory, setActiveCategory] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
-    const [isScannerOpen, setIsScannerOpen] = useState(false);
     const { addItem } = useCartStore();
 
     const filteredProducts = products.filter((product) => {
@@ -28,15 +26,7 @@ export default function POSPage() {
         return matchesCategory && matchesSearch;
     });
 
-    const handleScan = (code: string) => {
-        const product = products.find(p => p.barcode === code || p.id === code || p.name.toLowerCase() === code.toLowerCase());
-        if (product) {
-            addItem(product);
-            showAlert({ title: 'Berhasil!', message: `${product.name} telah ditambah ke keranjang.`, variant: 'info' });
-        } else {
-            showAlert({ title: 'Gagal!', message: 'Produk tidak ditemukan.', variant: 'warning' });
-        }
-    };
+    // Removed handleScan function
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && searchQuery.trim()) {
@@ -62,7 +52,7 @@ export default function POSPage() {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                             <input
                                 type="text"
-                                placeholder="Cari menu atau pindai barcode..."
+                                placeholder="Cari menu..."
                                 className="w-full pl-10 pr-4 py-4 rounded-2xl border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none focus:ring-2 focus:ring-blue-500 outline-none font-medium transition-all"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -70,13 +60,6 @@ export default function POSPage() {
                                 autoFocus
                             />
                         </div>
-                        <button
-                            onClick={() => setIsScannerOpen(true)}
-                            className="p-4 bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none text-blue-600 dark:text-blue-400 active:scale-95 transition-all"
-                            title="Scan Barcode"
-                        >
-                            <Barcode size={24} />
-                        </button>
                         <button
                             onClick={() => setIsMobileCartOpen(true)}
                             className="lg:hidden relative p-4 bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none text-slate-600 dark:text-slate-400 active:scale-95 transition-all"
@@ -141,14 +124,6 @@ export default function POSPage() {
             <div className="hidden lg:block w-96 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-xl">
                 <Cart />
             </div>
-
-            {/* Barcode Scanner Modal */}
-            {isScannerOpen && (
-                <BarcodeScanner
-                    onScan={handleScan}
-                    onClose={() => setIsScannerOpen(false)}
-                />
-            )}
 
             {/* Cart Section - Mobile Overlay */}
             {isMobileCartOpen && (
